@@ -88,7 +88,7 @@ checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 [[package]]
 name = "chartgeneratorsvg"
 version = "0.1.0"
-source = "git+ssh://git@github.com/stephaneworkspace/chartgeneratorsvg.git#6f452ea8b96008f23789903354271f57d278d57a"
+source = "git+ssh://git@github.com/stephaneworkspace/chartgeneratorsvg.git#364e08e1515fe12d5467077f1933fa66b7592677"
 dependencies = [
  "base64",
  "cbindgen",
