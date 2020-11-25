@@ -1,6 +1,8 @@
 use chartgeneratorsvg::generate::DtoNote2 as DtoNote;
-use chartgeneratorsvg::generate::Generate2;
-use chartgeneratorsvg::generate::GenerateDto;
+use chartgeneratorsvg::interface::InterfaceRustToolAudioExport;
+use chartgeneratorsvg::interface::InterfaceRustToolAudioExportChord;
+use std::fs::File;
+use std::io::prelude::*;
 use std::str::FromStr;
 use ukulele_midi::SoundBytes;
 use ukulele_midi::Variant;
@@ -12,21 +14,48 @@ const VEC_NOTE: [&str; 12] = [
 const VEC_CHORD: [&str; 13] = [
     "", "m", "sus2", "sus4", "aug", "dim", "7", "m7", "maj7", "aug7",
     "augMaj7", "dim7", "m7b5",
-]; // TODO in chartgeneratorsvg a list
+]; // TODO better
 
-const VEC_FRET: [usize; 5] = [0, 5, 7, 10, 12];
+const VEC_FRET: [u8; 5] = [0, 5, 7, 10, 12]; // TODO better
 
-fn main() {
-    for note in VEC_NOTE.iter() {
-        for chord in VEC_CHORD.iter() {}
+const VARIATION: [&str; 3] = ["chord", "arp8", "arp4"]; // TODO better
+
+fn main() -> std::io::Result<()> {
+    for fret_position in VEC_FRET.iter() {
+        for note in VEC_NOTE.iter() {
+            for chord in VEC_CHORD.iter() {
+                let mut dto: Vec<DtoNote> = Vec::new();
+                let interface: InterfaceRustToolAudioExport =
+                    InterfaceRustToolAudioExport::new();
+                dto.append(&mut interface.chord_list(
+                    note,
+                    chord,
+                    *fret_position,
+                ));
+                for v in VARIATION.iter() {
+                    for d in dto.iter() {
+                        for c in d.chord.iter() {
+                            for (counter, data) in c.data.iter().enumerate() {
+                                let vec_wav = generate_wav(
+                                    v,
+                                    &data.semitones[..] as &[u8],
+                                );
+                                let mut buffer = File::create(format!(
+                                    "temp/{}-{}-{}-{}-{}.wav",
+                                    fret_position, chord, note, v, counter
+                                ))?; // can be done better... but this is a simple tool
+                                buffer.write_all(&vec_wav[..])?;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+    Ok(())
 }
 
-fn generate_wav(
-    variant: &str,
-    semitones: &[u8],
-    sample_ukulele: Box<[u8]>,
-) -> Vec<u8> {
+fn generate_wav(variant: &str, semitones: &[u8]) -> Vec<u8> {
     let mut sb: SoundBytes = SoundBytes {
         semitones_midi: semitones,
         midi: &mut Vec::new(),
