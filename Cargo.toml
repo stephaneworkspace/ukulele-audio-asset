@@ -1,5 +1,5 @@
 [package]
-name = "ukulele-audio-asset"
+name = "ukulele_audio_asset"
 version = "0.1.0"
 authors = ["stephaneworkspace <s.bressani@bluewin.ch>"]
 edition = "2018"

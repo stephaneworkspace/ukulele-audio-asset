@@ -502,16 +502,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ukulele-audio-asset"
-version = "0.1.0"
-dependencies = [
- "cc",
- "chartgeneratorsvg",
- "libc",
- "ukulele-midi",
-]
-
-[[package]]
 name = "ukulele-midi"
 version = "0.1.0"
 source = "git+https://github.com/stephaneworkspace/ukulele-midi.git?branch=main#d7336c89f2872653aeb77e0d4373138b62d6186d"
@@ -520,6 +510,16 @@ dependencies = [
  "ghakuf",
  "log",
  "synthrs",
+]
+
+[[package]]
+name = "ukulele_audio_asset"
+version = "0.1.0"
+dependencies = [
+ "cc",
+ "chartgeneratorsvg",
+ "libc",
+ "ukulele-midi",
 ]
 
 [[package]]

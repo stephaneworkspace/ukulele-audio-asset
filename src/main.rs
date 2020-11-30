@@ -65,3 +65,33 @@ fn generate_wav(variant: &str, semitones: &[u8]) -> Vec<u8> {
     sb.generate_from_local_asset(v).unwrap();
     sb.get_wav().to_vec()
 }
+/*
+// In scale the program freeze 1 sec on my iphone on selectbox
+pub fn main() -> std::io::Result<()> {
+    for fret_position in VEC_FRET.iter() {
+        for note in VEC_NOTE.iter() {
+            for chord in VEC_CHORD.iter() {
+                let mut dto: Vec<DtoNote> = Vec::new();
+                let interface: InterfaceRustToolAudioExport =
+                    InterfaceRustToolAudioExport::new();
+                dto.append(&mut interface.chord_list(
+                    note,
+                    chord,
+                    *fret_position,
+                ));
+                for d in dto.iter() {
+                    for c in d.chord.iter() {
+                        for (counter, data) in c.data.iter().enumerate() {
+                            let mut file = File::create(format!(
+                                "temp_svg/{}-{}-{}-_-{}.svg",
+                                fret_position, chord, note, counter
+                            ))?; // can be done better... but this is a simple tool
+                            file.write_all(data.svg.as_bytes())?;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ok(())
+}*/
