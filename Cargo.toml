@@ -7,7 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chartgeneratorsvg = { git = "ssh://git@github.com/stephaneworkspace/chartgeneratorsvg.git" }
+chartgeneratorsvg = { git = "ssh://git@github.com/stephaneworkspace/chartgeneratorsvg.git", branch = "1.0.1" }
 ukulele-midi = { git = "https://github.com/stephaneworkspace/ukulele-midi.git", branch = "main"}
 libc = "0.2"
 

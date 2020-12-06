@@ -1,4 +1,4 @@
-use chartgeneratorsvg::generate::DtoNote2 as DtoNote;
+use chartgeneratorsvg::generate::DtoNote;
 use chartgeneratorsvg::interface::InterfaceRustToolAudioExport;
 use chartgeneratorsvg::interface::InterfaceRustToolAudioExportChord;
 use std::fs::File;
@@ -20,31 +20,42 @@ const VEC_FRET: [u8; 5] = [0, 5, 7, 10, 12]; // TODO better
 
 const VARIATION: [&str; 3] = ["chord", "arp8", "arp4"]; // TODO better
 
+const TUNING: [&str; 3] = ["C", "D", "G"];
+
 fn main() -> std::io::Result<()> {
-    for fret_position in VEC_FRET.iter() {
-        for note in VEC_NOTE.iter() {
-            for chord in VEC_CHORD.iter() {
-                let mut dto: Vec<DtoNote> = Vec::new();
-                let interface: InterfaceRustToolAudioExport =
-                    InterfaceRustToolAudioExport::new();
-                dto.append(&mut interface.chord_list(
-                    note,
-                    chord,
-                    *fret_position,
-                ));
-                for v in VARIATION.iter() {
-                    for d in dto.iter() {
-                        for c in d.chord.iter() {
-                            for (counter, data) in c.data.iter().enumerate() {
-                                let vec_wav = generate_wav(
-                                    v,
-                                    &data.semitones[..] as &[u8],
-                                );
-                                let mut buffer = File::create(format!(
-                                    "temp/{}-{}-{}-{}-{}.wav",
-                                    fret_position, chord, note, v, counter
-                                ))?; // can be done better... but this is a simple tool
-                                buffer.write_all(&vec_wav[..])?;
+    for tuning in TUNING.iter() {
+        for fret_position in VEC_FRET.iter() {
+            for note in VEC_NOTE.iter() {
+                for chord in VEC_CHORD.iter() {
+                    let mut dto: Vec<DtoNote> = Vec::new();
+                    let interface: InterfaceRustToolAudioExport =
+                        InterfaceRustToolAudioExport::new();
+                    dto.append(&mut interface.chord_list(
+                        note,
+                        chord,
+                        *fret_position,
+                        tuning,
+                    ));
+                    for v in VARIATION.iter() {
+                        for d in dto.iter() {
+                            for c in d.chord.iter() {
+                                for (counter, data) in c.data.iter().enumerate()
+                                {
+                                    let vec_wav = generate_wav(
+                                        v,
+                                        &data.semitones[..] as &[u8],
+                                    );
+                                    let mut buffer = File::create(format!(
+                                        "temp/{}-{}-{}-{}-{}-{}.wav",
+                                        tuning,
+                                        fret_position,
+                                        chord,
+                                        note,
+                                        v,
+                                        counter
+                                    ))?; // can be done better... but this is a simple tool
+                                    buffer.write_all(&vec_wav[..])?;
+                                }
                             }
                         }
                     }
