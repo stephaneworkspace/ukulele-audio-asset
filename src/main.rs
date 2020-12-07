@@ -16,7 +16,7 @@ const VEC_CHORD: [&str; 13] = [
     "augMaj7", "dim7", "m7b5",
 ]; // TODO better
 
-const VEC_FRET: [u8; 5] = [0, 5, 7, 10, 12]; // TODO better
+const VEC_FRET: [u8; 5] = [0, 3, 5, 7, 10, 12]; // TODO better
 
 const VARIATION: [&str; 3] = ["chord", "arp8", "arp4"]; // TODO better
 
