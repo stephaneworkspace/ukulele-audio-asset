@@ -16,13 +16,42 @@ const VEC_CHORD: [&str; 13] = [
     "augMaj7", "dim7", "m7b5",
 ]; // TODO better
 
-const VEC_FRET: [u8; 5] = [0, 3, 5, 7, 10, 12]; // TODO better
+const VEC_FRET: [u8; 6] = [0, 3, 5, 7, 10, 12]; // TODO better
 
 const VARIATION: [&str; 3] = ["chord", "arp8", "arp4"]; // TODO better
 
 const TUNING: [&str; 3] = ["C", "D", "G"];
 
-fn main() -> std::io::Result<()> {
+const NOTE_TUNING: [(&str, [u8; 1]); 12] = [
+    ("C", [0x66]),
+    ("C#", [0x61]),
+    ("D", [0x62]),
+    ("D#", [0x63]),
+    ("E", [0x64]),
+    ("F", [0x65]),
+    ("F#", [0x66]),
+    ("G", [0x67]),
+    ("G#", [0x68]),
+    ("A", [0x69]),
+    ("A#", [0x6A]),
+    ("B", [0x6B]),
+];
+
+fn main() {
+    main_tuning();
+}
+
+fn main_tuning() -> std::io::Result<()> {
+    for note in NOTE_TUNING.iter() {
+        let vec_wav = generate_wav("one_note", &note.1);
+        let mut buffer =
+            File::create(format!("temp/one_note-{}.wav", note.0,))?; // can be done better... but this is a simple tool
+        buffer.write_all(&vec_wav[..])?;
+    }
+    Ok(())
+}
+
+fn main_audio() -> std::io::Result<()> {
     for tuning in TUNING.iter() {
         for fret_position in VEC_FRET.iter() {
             for note in VEC_NOTE.iter() {
